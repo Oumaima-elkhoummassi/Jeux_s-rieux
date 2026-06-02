@@ -4,24 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChatBot Explorateur — Jeu Blockly</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f1117;
-    --panel: #1a1d27;
-    --panel2: #22263a;
-    --accent: #7c6af7;
-    --accent2: #f7c76a;
-    --green: #4ade80;
-    --red: #f87171;
-    --blue: #60a5fa;
-    --text: #e8eaf0;
-    --muted: #6b7280;
-    --border: #2e3347;
-    --cat-move: #7c6af7;
-    --cat-turn: #f7c76a;
-    --cat-action: #4ade80;
-    --block-h: 44px;
+    --bg: #f0f6ff;
+    --panel: #ffffff;
+    --panel2: #e8f0fe;
+    --accent: #4f63d2;
+    --accent2: #f59e0b;
+    --green: #16a34a;
+    --red: #dc2626;
+    --text: #1e2a4a;
+    --muted: #64748b;
+    --border: #c7d7f0;
+    --cat-move: #4f63d2;
+    --cat-turn: #d97706;
+    --cat-action: #16a34a;
     --r: 10px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,20 +38,22 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 24px;
-    background: var(--panel);
-    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #4f63d2, #6b8df7);
+    border-bottom: 1px solid #3a50c0;
     flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(79,99,210,.2);
   }
-  .logo { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
-  .logo span { color: var(--accent); }
+  .logo { font-size: 20px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+  .logo span { color: #fde68a; }
   .level-tabs { display: flex; gap: 8px; }
   .lvl-btn {
-    padding: 6px 16px; border-radius: 20px; border: 1.5px solid var(--border);
-    background: transparent; color: var(--muted); font-family: 'Nunito', sans-serif;
-    font-weight: 700; font-size: 13px; cursor: pointer; transition: all .2s;
+    padding: 6px 16px; border-radius: 20px; border: 1.5px solid rgba(255,255,255,.4);
+    background: rgba(255,255,255,.15); color: rgba(255,255,255,.8);
+    font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px;
+    cursor: pointer; transition: all .2s;
   }
-  .lvl-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .lvl-btn.unlocked { border-color: var(--accent); color: var(--accent); }
+  .lvl-btn.active { background: #fff; border-color: #fff; color: var(--accent); }
+  .lvl-btn.unlocked { background: rgba(255,255,255,.25); color: #fff; border-color: rgba(255,255,255,.6); }
   .lvl-btn.locked { opacity: 0.4; cursor: not-allowed; }
   .stars { font-size: 18px; letter-spacing: 2px; }
 
@@ -61,13 +61,12 @@
   .main {
     display: grid;
     grid-template-columns: 200px 1fr 300px;
-    gap: 0;
     flex: 1;
     min-height: 0;
     height: calc(100vh - 60px);
   }
 
-  /* SIDEBAR BLOCKS */
+  /* SIDEBAR */
   .sidebar {
     background: var(--panel);
     border-right: 1px solid var(--border);
@@ -76,6 +75,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    box-shadow: 2px 0 8px rgba(79,99,210,.06);
   }
   .sidebar-title {
     font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
@@ -90,15 +90,16 @@
     display: flex; align-items: center; gap: 8px;
     padding: 8px 12px; border-radius: var(--r);
     cursor: grab; font-weight: 700; font-size: 13px;
-    transition: transform .15s, opacity .15s;
+    transition: transform .15s, box-shadow .15s;
     user-select: none; border: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
   }
+  .block-item:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,.12); }
   .block-item:active { cursor: grabbing; transform: scale(0.96); }
-  .block-item.move { background: #312e81; color: #a5b4fc; border-left: 3px solid var(--cat-move); }
-  .block-item.turn { background: #451a03; color: #fcd34d; border-left: 3px solid var(--cat-turn); }
-  .block-item.action { background: #052e16; color: #86efac; border-left: 3px solid var(--cat-action); }
-  .block-item.loop { background: #1e1b4b; color: #c4b5fd; border-left: 3px solid #a78bfa; }
-  .block-icon { font-size: 16px; }
+  .block-item.move { background: #eff2ff; color: #3b47b8; border-left: 3px solid var(--cat-move); }
+  .block-item.turn { background: #fffbeb; color: #92400e; border-left: 3px solid var(--cat-turn); }
+  .block-item.action { background: #f0fdf4; color: #14532d; border-left: 3px solid var(--cat-action); }
+  .block-item.loop { background: #f5f3ff; color: #4c1d95; border-left: 3px solid #7c3aed; }
 
   /* CENTER */
   .center { display: flex; flex-direction: column; overflow: hidden; }
@@ -109,81 +110,79 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bg);
+    background: #e8f0fe;
     padding: 20px;
-    position: relative;
     overflow: hidden;
   }
   canvas#maze {
-    border-radius: 12px;
-    border: 2px solid var(--border);
-    image-rendering: pixelated;
+    border-radius: 16px;
+    border: 2px solid #c7d7f0;
+    box-shadow: 0 4px 24px rgba(79,99,210,.15);
     max-width: 100%;
     max-height: 100%;
   }
 
   /* CONSIGNE */
   .consigne {
-    background: var(--panel2);
+    background: #fff;
     border-top: 1px solid var(--border);
     padding: 10px 20px;
     display: flex; align-items: center; gap: 12px;
     flex-shrink: 0;
+    box-shadow: 0 -1px 4px rgba(79,99,210,.06);
   }
   .consigne-icon { font-size: 22px; }
-  .consigne-text { font-size: 14px; font-weight: 600; }
-  .consigne-text b { color: var(--accent2); }
+  .consigne-text { font-size: 14px; font-weight: 600; color: var(--text); }
+  .consigne-text b { color: var(--accent); }
 
   /* RIGHT PANEL */
   .right-panel {
     display: flex; flex-direction: column;
     background: var(--panel);
     border-left: 1px solid var(--border);
+    box-shadow: -2px 0 8px rgba(79,99,210,.06);
   }
 
   /* CODE EDITOR */
-  .code-editor {
-    flex: 1;
-    display: flex; flex-direction: column;
-    overflow: hidden;
-  }
+  .code-editor { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
   .editor-header {
     padding: 10px 16px; border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
+    background: var(--panel2);
   }
-  .editor-title { font-size: 13px; font-weight: 800; letter-spacing: 0.5px; color: var(--muted); }
+  .editor-title { font-size: 13px; font-weight: 800; letter-spacing: 0.5px; color: var(--accent); }
   .editor-body {
     flex: 1; overflow-y: auto; padding: 12px;
     display: flex; flex-direction: column; gap: 4px;
-    min-height: 0;
+    min-height: 0; background: #f8faff;
   }
   .drop-zone {
-    border: 2px dashed var(--border); border-radius: var(--r);
+    border: 2px dashed #b8cdf0; border-radius: var(--r);
     min-height: 60px; padding: 10px;
     display: flex; align-items: center; justify-content: center;
     transition: border-color .2s, background .2s;
-    flex: 1;
-    flex-direction: column; gap: 4px;
+    flex: 1; flex-direction: column; gap: 4px;
+    background: #f0f5ff;
   }
-  .drop-zone.drag-over { border-color: var(--accent); background: rgba(124,106,247,.07); }
+  .drop-zone.drag-over { border-color: var(--accent); background: #e8effd; }
   .drop-hint { color: var(--muted); font-size: 13px; font-weight: 600; }
   .placed-block {
     display: flex; align-items: center; gap: 8px;
     padding: 8px 12px; border-radius: 8px;
     font-weight: 700; font-size: 13px;
     animation: slideIn .2s ease;
-    cursor: pointer;
-    width: 100%;
-    transition: opacity .15s;
+    cursor: pointer; width: 100%;
+    transition: opacity .15s, box-shadow .15s;
     position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,.07);
   }
-  .placed-block:hover { opacity: 0.8; }
-  .placed-block .del { margin-left: auto; opacity: 0; font-size: 16px; }
+  .placed-block:hover { opacity: 0.85; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+  .placed-block .del { margin-left: auto; opacity: 0; font-size: 16px; color: #ef4444; }
   .placed-block:hover .del { opacity: 1; }
-  .placed-block.move { background: #312e81; color: #a5b4fc; }
-  .placed-block.turn { background: #451a03; color: #fcd34d; }
-  .placed-block.action { background: #052e16; color: #86efac; }
-  .placed-block.loop { background: #1e1b4b; color: #c4b5fd; }
+  .placed-block.move { background: #eff2ff; color: #3b47b8; }
+  .placed-block.turn { background: #fffbeb; color: #92400e; }
+  .placed-block.action { background: #f0fdf4; color: #14532d; }
+  .placed-block.loop { background: #f5f3ff; color: #4c1d95; }
   .placed-block.executing { outline: 2px solid var(--accent2); animation: pulse .5s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
   @keyframes slideIn { from{transform:translateX(-10px);opacity:0} to{transform:none;opacity:1} }
@@ -192,8 +191,8 @@
   .controls {
     padding: 12px 16px;
     border-top: 1px solid var(--border);
-    display: flex; gap: 8px;
-    flex-shrink: 0;
+    display: flex; gap: 8px; flex-shrink: 0;
+    background: #fff;
   }
   .btn {
     flex: 1; padding: 10px; border-radius: var(--r); border: none;
@@ -201,17 +200,17 @@
     cursor: pointer; transition: all .15s;
   }
   .btn:active { transform: scale(0.97); }
-  .btn-run { background: var(--green); color: #052e16; }
-  .btn-run:hover { background: #22c55e; }
-  .btn-clear { background: var(--panel2); color: var(--muted); border: 1px solid var(--border); }
-  .btn-clear:hover { background: var(--border); }
+  .btn-run { background: linear-gradient(135deg, #16a34a, #22c55e); color: #fff; box-shadow: 0 2px 8px rgba(22,163,74,.3); }
+  .btn-run:hover { background: linear-gradient(135deg, #15803d, #16a34a); }
+  .btn-clear { background: #f1f5f9; color: var(--muted); border: 1px solid var(--border); }
+  .btn-clear:hover { background: #e2e8f0; }
 
   /* FEEDBACK */
   .feedback {
     padding: 10px 16px; border-top: 1px solid var(--border);
     font-size: 13px; font-weight: 700; min-height: 42px;
     display: flex; align-items: center; gap: 8px;
-    flex-shrink: 0;
+    flex-shrink: 0; background: #fff;
   }
   .feedback.success { color: var(--green); }
   .feedback.error { color: var(--red); }
@@ -220,42 +219,39 @@
   /* MODAL */
   .modal-overlay {
     position: fixed; inset: 0; z-index: 1000;
-    background: rgba(0,0,0,.7); backdrop-filter: blur(4px);
+    background: rgba(79,99,210,.25); backdrop-filter: blur(6px);
     display: flex; align-items: center; justify-content: center;
     opacity: 0; pointer-events: none; transition: opacity .3s;
   }
   .modal-overlay.show { opacity: 1; pointer-events: all; }
   .modal {
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 20px; padding: 32px;
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 24px; padding: 36px;
     max-width: 400px; width: 90%; text-align: center;
     transform: scale(.9); transition: transform .3s;
+    box-shadow: 0 20px 60px rgba(79,99,210,.25);
   }
   .modal-overlay.show .modal { transform: scale(1); }
   .modal-emoji { font-size: 56px; margin-bottom: 16px; }
-  .modal h2 { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
+  .modal h2 { font-size: 24px; font-weight: 900; margin-bottom: 8px; color: var(--text); }
   .modal p { color: var(--muted); font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
   .modal .star-row { font-size: 32px; margin-bottom: 16px; }
   .modal-btn {
-    background: var(--accent); color: #fff; border: none;
-    padding: 12px 32px; border-radius: 40px;
-    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 16px;
-    cursor: pointer; transition: background .2s; margin: 4px;
+    background: linear-gradient(135deg, #4f63d2, #6b8df7); color: #fff; border: none;
+    padding: 12px 28px; border-radius: 40px;
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px;
+    cursor: pointer; transition: all .2s; margin: 4px;
+    box-shadow: 0 4px 12px rgba(79,99,210,.3);
   }
-  .modal-btn:hover { background: #6355e0; }
-  .modal-btn.secondary { background: var(--panel2); color: var(--text); border: 1px solid var(--border); }
-
-  /* LOOP BLOCK special */
-  .loop-container { background: #1e1b4b; border-radius: 10px; padding: 6px 6px 6px 20px; border-left: 3px solid #a78bfa; width: 100%; }
-  .loop-header { color: #c4b5fd; font-weight: 700; font-size: 13px; margin-bottom: 4px; }
-  .loop-inner { display: flex; flex-direction: column; gap: 3px; }
+  .modal-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(79,99,210,.4); }
+  .modal-btn.secondary { background: #f1f5f9; color: var(--text); border: 1px solid var(--border); box-shadow: none; }
 
   /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #c7d7f0; border-radius: 3px; }
 
-  /* MOBILE */
-  @media(max-width: 700px) {
+  @media(max-width:700px) {
     .main { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; height: auto; }
     .sidebar { flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid var(--border); }
     .right-panel { max-height: 340px; }
@@ -271,45 +267,42 @@
     <button class="lvl-btn locked" onclick="loadLevel(1)" id="lvl1">Niveau 2</button>
     <button class="lvl-btn locked" onclick="loadLevel(2)" id="lvl2">Niveau 3</button>
   </div>
-  <div class="stars" id="starsHeader">⭐⭐⭐</div>
+  <div class="stars" id="starsHeader">☆☆☆</div>
 </header>
 
 <div class="main">
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-title">Blocs de code</div>
     <div class="block-cat">
-      <div class="cat-label" style="color:#a5b4fc">🚀 Mouvement</div>
+      <div class="cat-label" style="color:#4f63d2">🚀 Mouvement</div>
       <div class="block-item move" draggable="true" data-type="move" data-action="forward" data-icon="⬆️">⬆️ Avancer</div>
       <div class="block-item move" draggable="true" data-type="move" data-action="backward" data-icon="⬇️">⬇️ Reculer</div>
     </div>
     <div class="block-cat">
-      <div class="cat-label" style="color:#fcd34d">🔄 Rotation</div>
+      <div class="cat-label" style="color:#d97706">🔄 Rotation</div>
       <div class="block-item turn" draggable="true" data-type="turn" data-action="left" data-icon="↩️">↩️ Tourner gauche</div>
       <div class="block-item turn" draggable="true" data-type="turn" data-action="right" data-icon="↪️">↪️ Tourner droite</div>
     </div>
     <div class="block-cat" id="actionCat">
-      <div class="cat-label" style="color:#86efac">⚡ Action</div>
+      <div class="cat-label" style="color:#16a34a">⚡ Action</div>
       <div class="block-item action" draggable="true" data-type="action" data-action="interact" data-icon="🎯">🎯 Interagir</div>
     </div>
     <div class="block-cat" id="loopCat" style="display:none">
-      <div class="cat-label" style="color:#c4b5fd">🔁 Répéter</div>
+      <div class="cat-label" style="color:#7c3aed">🔁 Répéter</div>
       <div class="block-item loop" draggable="true" data-type="loop" data-action="repeat3" data-icon="🔁">🔁 Répéter 3×</div>
     </div>
   </div>
 
-  <!-- CENTER -->
   <div class="center">
     <div class="game-area">
       <canvas id="maze" width="420" height="420"></canvas>
     </div>
     <div class="consigne">
       <div class="consigne-icon">📋</div>
-      <div class="consigne-text" id="consigneText">Charge...</div>
+      <div class="consigne-text" id="consigneText">Chargement...</div>
     </div>
   </div>
 
-  <!-- RIGHT PANEL -->
   <div class="right-panel">
     <div class="code-editor">
       <div class="editor-header">
@@ -331,7 +324,6 @@
   </div>
 </div>
 
-<!-- MODAL SUCCESS -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-emoji" id="modalEmoji">🎉</div>
@@ -346,562 +338,408 @@
 </div>
 
 <script>
-// ===================== NIVEAUX =====================
-const TILE = 60;
-const EMPTY = 0, WALL = 1, GOAL = 2, FISH = 3, KEY = 4, DOOR = 5;
-
-const LEVELS = [
+const EMPTY=0,WALL=1,GOAL=2,FISH=3,KEY=4,DOOR=5;
+const LEVELS=[
   {
-    name: "Niveau 1 — Premiers pas",
-    consigne: "Guide le <b>chat 🐱</b> jusqu'au <b>poisson 🐟</b>. Utilise les blocs <b>Avancer</b> et <b>Tourner</b>.",
-    grid: [
-      [1,1,1,1,1,1,1],
-      [1,0,0,0,1,3,1],
-      [1,0,1,0,1,0,1],
-      [1,0,1,0,0,0,1],
-      [1,0,1,1,1,0,1],
-      [1,0,0,0,0,0,1],
-      [1,1,1,1,1,1,1],
-    ],
-    start: {x:1, y:5, dir:0},
-    goal: {x:5, y:1},
-    solution: ['forward','forward','forward','forward','right','forward','forward','forward','forward'],
-    stars: 3,
-    maxBlocks: 10,
-    showLoop: false,
-    showAction: false,
+    name:"Niveau 1 — Premiers pas",
+    consigne:"Guide le <b>chat 🐱</b> jusqu'au <b>poisson 🐟</b>. Utilise les blocs <b>Avancer</b> et <b>Tourner</b>.",
+    grid:[[1,1,1,1,1,1,1],[1,0,0,0,1,3,1],[1,0,1,0,1,0,1],[1,0,1,0,0,0,1],[1,0,1,1,1,0,1],[1,0,0,0,0,0,1],[1,1,1,1,1,1,1]],
+    start:{x:1,y:5,dir:0},goal:{x:5,y:1},maxBlocks:10,showLoop:false,showAction:false,
   },
   {
-    name: "Niveau 2 — Collecte de poissons",
-    consigne: "Collecte les <b>2 poissons 🐟</b> en utilisant <b>Interagir</b> sur chacun. Attention au chemin !",
-    grid: [
-      [1,1,1,1,1,1,1],
-      [1,0,3,0,0,3,1],
-      [1,0,1,1,0,1,1],
-      [1,0,0,1,0,0,1],
-      [1,1,0,1,1,0,1],
-      [1,0,0,0,0,0,1],
-      [1,1,1,1,1,1,1],
-    ],
-    start: {x:1, y:5, dir:0},
-    goal: null,
-    collectibles: [{x:2,y:1},{x:5,y:1}],
-    solution: [],
-    stars: 3,
-    maxBlocks: 16,
-    showLoop: false,
-    showAction: true,
+    name:"Niveau 2 — Collecte de poissons",
+    consigne:"Collecte les <b>2 poissons 🐟</b> en utilisant <b>Interagir</b> sur chacun. Attention au chemin !",
+    grid:[[1,1,1,1,1,1,1],[1,0,3,0,0,3,1],[1,0,1,1,0,1,1],[1,0,0,1,0,0,1],[1,1,0,1,1,0,1],[1,0,0,0,0,0,1],[1,1,1,1,1,1,1]],
+    start:{x:1,y:5,dir:0},goal:null,collectibles:[{x:2,y:1},{x:5,y:1}],maxBlocks:16,showLoop:false,showAction:true,
   },
   {
-    name: "Niveau 3 — La clé et la porte",
-    consigne: "Prends la <b>clé 🔑</b>, ouvre la <b>porte 🚪</b>, puis attrape le <b>poisson 🐟</b>. Utilise <b>Répéter</b> pour optimiser !",
-    grid: [
-      [1,1,1,1,1,1,1],
-      [1,3,0,5,0,0,1],
-      [1,1,0,1,1,0,1],
-      [1,0,0,0,0,0,1],
-      [1,0,1,1,0,1,1],
-      [1,0,0,4,0,0,1],
-      [1,1,1,1,1,1,1],
-    ],
-    start: {x:1, y:3, dir:0},
-    goal: {x:1, y:1},
-    collectibles: [{x:3,y:5}], // key
-    doorPos: {x:3, y:1},
-    solution: [],
-    stars: 3,
-    maxBlocks: 20,
-    showLoop: true,
-    showAction: true,
+    name:"Niveau 3 — La clé et la porte",
+    consigne:"Prends la <b>clé 🔑</b>, ouvre la <b>porte 🚪</b>, puis attrape le <b>poisson 🐟</b>. Utilise <b>Répéter</b> pour optimiser !",
+    grid:[[1,1,1,1,1,1,1],[1,3,0,5,0,0,1],[1,1,0,1,1,0,1],[1,0,0,0,0,0,1],[1,0,1,1,0,1,1],[1,0,0,4,0,0,1],[1,1,1,1,1,1,1]],
+    start:{x:1,y:3,dir:0},goal:{x:1,y:1},collectibles:[{x:3,y:5}],doorPos:{x:3,y:1},maxBlocks:20,showLoop:true,showAction:true,
   }
 ];
 
-// ===================== STATE =====================
-let currentLevel = 0;
-let unlockedLevels = [true, false, false];
-let levelStars = [0, 0, 0];
-let program = []; // [{type, action, icon, label}]
-let catState = {};
-let animRunning = false;
-let collected = [];
-let hasKey = false;
-let doorOpen = false;
-let originalGrid = [];
+let currentLevel=0,unlockedLevels=[true,false,false],levelStars=[0,0,0];
+let program=[],catState={},animRunning=false,collected=[],hasKey=false,doorOpen=false,originalGrid=[];
 
-// ===================== CANVAS =====================
-const canvas = document.getElementById('maze');
-const ctx = canvas.getContext('2d');
+const canvas=document.getElementById('maze'),ctx=canvas.getContext('2d');
+const DIR_VECTORS=[{dx:0,dy:-1},{dx:1,dy:0},{dx:0,dy:1},{dx:-1,dy:0}];
 
-const COLORS = {
-  wall: '#1e2235',
-  wallBorder: '#2e3347',
-  empty: '#141720',
-  goal: '#052e16',
-  fish: '#083344',
-  key: '#422006',
-  door: '#1c1917',
-  doorOpen: '#052e16',
-  path: '#1a1f30',
+const COLORS={
+  wall:'#c7d7f0', wallBorder:'#a8c0e8', empty:'#eef3fd',
+  goal:'#d1fae5', fish:'#bfdbfe', key:'#fde68a', door:'#e0e7ff',
 };
-const CAT_DIRS = ['⬆️','➡️','⬇️','⬅️'];
-const DIR_VECTORS = [{dx:0,dy:-1},{dx:1,dy:0},{dx:0,dy:1},{dx:-1,dy:0}];
 
-function getLevel() { return LEVELS[currentLevel]; }
-function getGrid() { return JSON.parse(JSON.stringify(originalGrid)); }
+function getLevel(){return LEVELS[currentLevel];}
+function getGrid(){return JSON.parse(JSON.stringify(originalGrid));}
 
-function drawMaze(state) {
-  const lvl = getLevel();
-  const grid = state.grid || originalGrid;
-  const cols = grid[0].length, rows = grid.length;
-  const tileW = canvas.width / cols, tileH = canvas.height / rows;
+function drawMaze(state){
+  const lvl=getLevel(),grid=state.grid||originalGrid;
+  const cols=grid[0].length,rows=grid.length;
+  const tileW=canvas.width/cols,tileH=canvas.height/rows;
   ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  for(let r=0;r<rows;r++) {
-    for(let c=0;c<cols;c++) {
-      const t = grid[r][c];
-      let bg = t===WALL ? COLORS.wall : COLORS.empty;
-      if(t===GOAL) bg = COLORS.goal;
-      if(t===FISH) bg = COLORS.fish;
-      if(t===KEY) bg = COLORS.key;
-      if(t===DOOR) bg = COLORS.door;
-      ctx.fillStyle = bg;
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const t=grid[r][c];
+      let bg=t===WALL?COLORS.wall:COLORS.empty;
+      if(t===GOAL)bg=COLORS.goal;
+      if(t===FISH)bg=COLORS.fish;
+      if(t===KEY)bg=COLORS.key;
+      if(t===DOOR)bg=COLORS.door;
+      ctx.fillStyle=bg;
       ctx.beginPath();
-      ctx.roundRect(c*tileW+1, r*tileH+1, tileW-2, tileH-2, 4);
+      ctx.roundRect(c*tileW+2,r*tileH+2,tileW-4,tileH-4,6);
       ctx.fill();
-      if(t===WALL) {
-        ctx.strokeStyle = COLORS.wallBorder;
-        ctx.lineWidth = 1;
-        ctx.stroke();
+      if(t===WALL){
+        ctx.strokeStyle=COLORS.wallBorder;
+        ctx.lineWidth=1.5;ctx.stroke();
       }
-      // icons
-      ctx.font = `${Math.floor(tileW*0.45)}px serif`;
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      const cx = c*tileW+tileW/2, cy = r*tileH+tileH/2;
-      if(t===GOAL && (!lvl.doorPos)) ctx.fillText('🐟', cx, cy);
-      if(t===FISH) ctx.fillText('🐟', cx, cy);
-      if(t===KEY) ctx.fillText('🔑', cx, cy);
-      if(t===DOOR) ctx.fillText('🚪', cx, cy);
+      ctx.font=`${Math.floor(tileW*0.45)}px serif`;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      const cx=c*tileW+tileW/2,cy=r*tileH+tileH/2;
+      if(t===GOAL&&(!lvl.doorPos))ctx.fillText('🐟',cx,cy);
+      if(t===FISH)ctx.fillText('🐟',cx,cy);
+      if(t===KEY)ctx.fillText('🔑',cx,cy);
+      if(t===DOOR)ctx.fillText('🚪',cx,cy);
     }
   }
-
-  // draw cat
-  const sx = state.x*tileW+tileW/2, sy = state.y*tileH+tileH/2;
-  ctx.font = `${Math.floor(tileW*0.55)}px serif`;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('🐱', sx, sy);
+  const sx=state.x*tileW+tileW/2,sy=state.y*tileH+tileH/2;
+  ctx.font=`${Math.floor(tileW*0.55)}px serif`;
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('🐱',sx,sy);
 }
 
-// ===================== LEVEL LOADING =====================
-function loadLevel(n) {
-  if(!unlockedLevels[n]) return;
-  currentLevel = n;
-  const lvl = LEVELS[n];
-  originalGrid = lvl.grid.map(r=>[...r]);
-  collected = [];
-  hasKey = false;
-  doorOpen = false;
-  catState = { x: lvl.start.x, y: lvl.start.y, dir: lvl.start.dir, grid: getGrid() };
-  program = [];
-  animRunning = false;
-
-  // UI
+function loadLevel(n){
+  if(!unlockedLevels[n])return;
+  currentLevel=n;
+  const lvl=LEVELS[n];
+  originalGrid=lvl.grid.map(r=>[...r]);
+  collected=[];hasKey=false;doorOpen=false;
+  catState={x:lvl.start.x,y:lvl.start.y,dir:lvl.start.dir,grid:getGrid()};
+  program=[];animRunning=false;
   document.querySelectorAll('.lvl-btn').forEach((b,i)=>{
-    b.className = 'lvl-btn';
-    if(i===n) b.className += ' active';
-    else if(unlockedLevels[i]) b.className += ' unlocked';
-    else b.className += ' locked';
+    b.className='lvl-btn';
+    if(i===n)b.className+=' active';
+    else if(unlockedLevels[i])b.className+=' unlocked';
+    else b.className+=' locked';
   });
-  document.getElementById('consigneText').innerHTML = lvl.consigne;
-  document.getElementById('loopCat').style.display = lvl.showLoop ? '' : 'none';
-  document.getElementById('actionCat').style.display = lvl.showAction ? '' : 'none';
-  renderProgram();
-  setFeedback('','');
-  drawMaze(catState);
-  updateStarsHeader();
+  document.getElementById('consigneText').innerHTML=lvl.consigne;
+  document.getElementById('loopCat').style.display=lvl.showLoop?'':'none';
+  document.getElementById('actionCat').style.display=lvl.showAction?'':'none';
+  renderProgram();setFeedback('','');drawMaze(catState);updateStarsHeader();
 }
 
-function updateStarsHeader() {
-  const s = levelStars[currentLevel];
-  document.getElementById('starsHeader').textContent = '⭐'.repeat(s) + '☆'.repeat(3-s);
+function updateStarsHeader(){
+  const s=levelStars[currentLevel];
+  document.getElementById('starsHeader').textContent='⭐'.repeat(s)+'☆'.repeat(3-s);
 }
 
-// ===================== DRAG & DROP =====================
 document.querySelectorAll('.block-item').forEach(el=>{
-  el.addEventListener('dragstart', e=>{
-    e.dataTransfer.setData('text/plain', JSON.stringify({
-      type: el.dataset.type, action: el.dataset.action, icon: el.dataset.icon,
-      label: el.textContent.trim()
-    }));
+  el.addEventListener('dragstart',e=>{
+    e.dataTransfer.setData('text/plain',JSON.stringify({type:el.dataset.type,action:el.dataset.action,icon:el.dataset.icon,label:el.textContent.trim()}));
   });
-  el.addEventListener('click', ()=>addBlock({
-    type: el.dataset.type, action: el.dataset.action,
-    icon: el.dataset.icon, label: el.textContent.trim()
-  }));
+  el.addEventListener('click',()=>addBlock({type:el.dataset.type,action:el.dataset.action,icon:el.dataset.icon,label:el.textContent.trim()}));
 });
 
-const dropZone = document.getElementById('dropZone');
-dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('drag-over'); });
-dropZone.addEventListener('dragleave', ()=>dropZone.classList.remove('drag-over'));
-dropZone.addEventListener('drop', e=>{
-  e.preventDefault(); dropZone.classList.remove('drag-over');
-  try {
-    const d = JSON.parse(e.dataTransfer.getData('text/plain'));
-    addBlock(d);
-  } catch(err){}
-});
-
-function addBlock(b) {
-  if(animRunning) return;
-  const lvl = getLevel();
-  if(program.length >= lvl.maxBlocks) {
-    setFeedback('⚠️ Limite de blocs atteinte !', 'error'); return;
-  }
-  program.push(b);
-  renderProgram();
-  setFeedback('','');
+function addBlock(b){
+  if(animRunning)return;
+  const lvl=getLevel();
+  if(program.length>=lvl.maxBlocks){setFeedback('⚠️ Limite de blocs atteinte !','error');return;}
+  program.push(b);renderProgram();setFeedback('','');
 }
+function removeBlock(i){if(animRunning)return;program.splice(i,1);renderProgram();}
 
-function removeBlock(i) {
-  if(animRunning) return;
-  program.splice(i,1);
-  renderProgram();
-}
-
-function renderProgram() {
-  const body = document.getElementById('editorBody');
-  body.innerHTML = '';
-  document.getElementById('blockCount').textContent = program.length + ' bloc' + (program.length!==1?'s':'');
-
-  if(program.length===0) {
-    const dz = document.createElement('div');
-    dz.className = 'drop-zone'; dz.id = 'dropZone';
-    dz.innerHTML = '<span class="drop-hint">⬅ Glisse les blocs ici</span><span style="color:var(--muted);font-size:11px">ou clique dessus à gauche</span>';
-    dz.addEventListener('dragover', e=>{ e.preventDefault(); dz.classList.add('drag-over'); });
-    dz.addEventListener('dragleave', ()=>dz.classList.remove('drag-over'));
-    dz.addEventListener('drop', e=>{
-      e.preventDefault(); dz.classList.remove('drag-over');
-      try { const d = JSON.parse(e.dataTransfer.getData('text/plain')); addBlock(d); } catch(err){}
-    });
-    body.appendChild(dz);
-    return;
+function renderProgram(){
+  const body=document.getElementById('editorBody');
+  body.innerHTML='';
+  document.getElementById('blockCount').textContent=program.length+' bloc'+(program.length!==1?'s':'');
+  if(program.length===0){
+    const dz=document.createElement('div');
+    dz.className='drop-zone';dz.id='dropZone';
+    dz.innerHTML='<span class="drop-hint">⬅ Glisse les blocs ici</span><span style="color:var(--muted);font-size:11px">ou clique dessus à gauche</span>';
+    dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+    dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+    dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');try{const d=JSON.parse(e.dataTransfer.getData('text/plain'));addBlock(d);}catch(err){}});
+    body.appendChild(dz);return;
   }
-
   program.forEach((b,i)=>{
-    const el = document.createElement('div');
-    el.className = 'placed-block '+b.type;
-    el.id = 'block-'+i;
-    el.innerHTML = `<span>${b.icon}</span><span>${b.label}</span><span class="del" onclick="removeBlock(${i})">✕</span>`;
-    el.setAttribute('draggable','true');
+    const el=document.createElement('div');
+    el.className='placed-block '+b.type;el.id='block-'+i;
+    el.innerHTML=`<span>${b.icon}</span><span>${b.label}</span><span class="del" onclick="removeBlock(${i})">✕</span>`;
     body.appendChild(el);
   });
-
-  // Scrollable drop zone at bottom
-  const dz2 = document.createElement('div');
-  dz2.style.cssText = 'height:40px;border:2px dashed var(--border);border-radius:var(--r);margin-top:4px;display:flex;align-items:center;justify-content:center;';
-  dz2.innerHTML = '<span style="color:var(--muted);font-size:12px">+ ajouter un bloc</span>';
-  dz2.addEventListener('dragover', e=>{ e.preventDefault(); dz2.style.borderColor='var(--accent)'; });
-  dz2.addEventListener('dragleave', ()=>dz2.style.borderColor='');
-  dz2.addEventListener('drop', e=>{
-    e.preventDefault(); dz2.style.borderColor='';
-    try { const d = JSON.parse(e.dataTransfer.getData('text/plain')); addBlock(d); } catch(err){}
-  });
+  const dz2=document.createElement('div');
+  dz2.style.cssText='height:40px;border:2px dashed #c7d7f0;border-radius:10px;margin-top:4px;display:flex;align-items:center;justify-content:center;background:#f0f5ff;';
+  dz2.innerHTML='<span style="color:#94a3b8;font-size:12px">+ ajouter un bloc</span>';
+  dz2.addEventListener('dragover',e=>{e.preventDefault();dz2.style.borderColor='#4f63d2';});
+  dz2.addEventListener('dragleave',()=>dz2.style.borderColor='#c7d7f0');
+  dz2.addEventListener('drop',e=>{e.preventDefault();dz2.style.borderColor='#c7d7f0';try{const d=JSON.parse(e.dataTransfer.getData('text/plain'));addBlock(d);}catch(err){}});
   body.appendChild(dz2);
 }
 
-function clearProgram() {
-  if(animRunning) return;
-  program = [];
-  renderProgram();
-  resetCat();
-  setFeedback('','');
-}
-
-function resetCat() {
-  const lvl = getLevel();
-  originalGrid = lvl.grid.map(r=>[...r]);
-  collected = [];
-  hasKey = false; doorOpen = false;
-  catState = { x: lvl.start.x, y: lvl.start.y, dir: lvl.start.dir, grid: getGrid() };
+function clearProgram(){if(animRunning)return;program=[];renderProgram();resetCat();setFeedback('','');}
+function resetCat(){
+  const lvl=getLevel();originalGrid=lvl.grid.map(r=>[...r]);
+  collected=[];hasKey=false;doorOpen=false;
+  catState={x:lvl.start.x,y:lvl.start.y,dir:lvl.start.dir,grid:getGrid()};
   drawMaze(catState);
 }
 
-// ===================== EXECUTION =====================
-async function runProgram() {
-  if(animRunning) return;
-  if(program.length===0) { setFeedback('⚠️ Ajoute des blocs pour commencer !','error'); return; }
-  animRunning = true;
-  resetCat();
-
-  const instructions = expandProgram(program);
-  let success = false;
-
-  for(let i=0; i<instructions.length; i++) {
-    const b = instructions[i];
-    highlightBlock(i);
-    await sleep(420);
-
-    const res = executeInstruction(b);
-    drawMaze(catState);
-
-    if(res==='wall') {
-      setFeedback('💥 Aïe ! Le chat a heurté un mur. Réessaie !','error');
-      animRunning=false; unhighlightAll(); return;
-    }
-    if(res==='success') { success=true; break; }
+async function runProgram(){
+  if(animRunning)return;
+  if(program.length===0){setFeedback('⚠️ Ajoute des blocs pour commencer !','error');return;}
+  animRunning=true;resetCat();
+  const instructions=expandProgram(program);
+  let success=false;
+  for(let i=0;i<instructions.length;i++){
+    const b=instructions[i];highlightBlock(i);await sleep(420);
+    const res=executeInstruction(b);drawMaze(catState);
+    if(res==='wall'){setFeedback('💥 Aïe ! Le chat a heurté un mur. Réessaie !','error');animRunning=false;unhighlightAll();return;}
+    if(res==='success'){success=true;break;}
   }
-  unhighlightAll();
-  animRunning=false;
-
-  const lvl = getLevel();
-  if(success) {
-    const stars = calcStars(instructions.length);
-    levelStars[currentLevel] = Math.max(levelStars[currentLevel], stars);
-    updateStarsHeader();
-    showSuccess(stars);
-  } else if(!success && lvl.goal===null && checkAllCollected()) {
-    const stars = calcStars(instructions.length);
-    levelStars[currentLevel] = Math.max(levelStars[currentLevel], stars);
-    updateStarsHeader();
-    showSuccess(stars);
+  unhighlightAll();animRunning=false;
+  const lvl=getLevel();
+  if(success||(lvl.goal===null&&checkAllCollected())){
+    const stars=calcStars(instructions.length);
+    levelStars[currentLevel]=Math.max(levelStars[currentLevel],stars);
+    updateStarsHeader();showSuccess(stars);
   } else {
     setFeedback('🐱 Programme terminé — Objectif non atteint. Essaie encore !','info');
   }
 }
 
-function expandProgram(prog) {
-  const out = [];
-  prog.forEach(b=>{
-    if(b.action==='repeat3') {
-      // next 2 blocks repeat 3×
-      // simple: repeat the single next block 3×, or wrap rest
-      // For simplicity: repeat3 means repeat last added block 3 times
-      out.push({type:'loop-marker',action:'repeat3',icon:'🔁',label:'Répéter 3× (fin)'});
-    } else {
-      out.push(b);
-    }
-  });
-  // Expand loops: find repeat3 markers and repeat the blocks before them
-  // Actually let's make repeat3 repeat the NEXT block 3×
-  const expanded = [];
-  for(let i=0;i<prog.length;i++) {
-    const b = prog[i];
-    if(b.action==='repeat3') {
-      const next = prog[i+1];
-      if(next) { expanded.push(next,next,next); i++; }
-    } else {
-      expanded.push(b);
-    }
+function expandProgram(prog){
+  const expanded=[];
+  for(let i=0;i<prog.length;i++){
+    const b=prog[i];
+    if(b.action==='repeat3'){const next=prog[i+1];if(next){expanded.push(next,next,next);i++;}}
+    else expanded.push(b);
   }
   return expanded;
 }
 
-function executeInstruction(b) {
-  const lvl = getLevel();
-  const grid = catState.grid;
-
-  if(b.action==='forward'||b.action==='backward') {
-    const mult = b.action==='backward'?-1:1;
-    const dv = DIR_VECTORS[catState.dir];
-    const nx = catState.x + dv.dx*mult;
-    const ny = catState.y + dv.dy*mult;
-    if(ny<0||ny>=grid.length||nx<0||nx>=grid[0].length) return 'wall';
-    const tile = grid[ny][nx];
-    if(tile===WALL) return 'wall';
-    if(tile===DOOR && !doorOpen) return 'wall';
-    catState.x = nx; catState.y = ny;
-    if(lvl.goal && nx===lvl.goal.x && ny===lvl.goal.y) return 'success';
+function executeInstruction(b){
+  const lvl=getLevel(),grid=catState.grid;
+  if(b.action==='forward'||b.action==='backward'){
+    const mult=b.action==='backward'?-1:1;
+    const dv=DIR_VECTORS[catState.dir];
+    const nx=catState.x+dv.dx*mult,ny=catState.y+dv.dy*mult;
+    if(ny<0||ny>=grid.length||nx<0||nx>=grid[0].length)return 'wall';
+    const tile=grid[ny][nx];
+    if(tile===WALL)return 'wall';
+    if(tile===DOOR&&!doorOpen)return 'wall';
+    catState.x=nx;catState.y=ny;
+    if(lvl.goal&&nx===lvl.goal.x&&ny===lvl.goal.y)return 'success';
     return 'ok';
   }
-  if(b.action==='left') { catState.dir=(catState.dir+3)%4; return 'ok'; }
-  if(b.action==='right') { catState.dir=(catState.dir+1)%4; return 'ok'; }
-  if(b.action==='interact') {
-    const grid = catState.grid;
-    const dv = DIR_VECTORS[catState.dir];
-    const fx = catState.x + dv.dx;
-    const fy = catState.y + dv.dy;
-    if(fy<0||fy>=grid.length||fx<0||fx>=grid[0].length) return 'ok';
-    const tile = grid[fy][fx];
-    if(tile===FISH||tile===GOAL) {
-      grid[fy][fx]=EMPTY;
-      collected.push({x:fx,y:fy});
-      if(checkAllCollected()&&!lvl.goal) return 'success';
-      if(lvl.goal && fx===lvl.goal.x && fy===lvl.goal.y) return 'success';
+  if(b.action==='left'){catState.dir=(catState.dir+3)%4;return 'ok';}
+  if(b.action==='right'){catState.dir=(catState.dir+1)%4;return 'ok';}
+  if(b.action==='interact'){
+    const dv=DIR_VECTORS[catState.dir];
+    const fx=catState.x+dv.dx,fy=catState.y+dv.dy;
+    if(fy<0||fy>=grid.length||fx<0||fx>=grid[0].length)return 'ok';
+    const tile=grid[fy][fx];
+    if(tile===FISH||tile===GOAL){
+      grid[fy][fx]=EMPTY;collected.push({x:fx,y:fy});
+      if(checkAllCollected()&&!lvl.goal)return 'success';
+      if(lvl.goal&&fx===lvl.goal.x&&fy===lvl.goal.y)return 'success';
       return 'ok';
     }
-    if(tile===KEY) {
-      grid[fy][fx]=EMPTY; hasKey=true; return 'ok';
-    }
-    if(tile===DOOR && hasKey) {
-      grid[fy][fx]=EMPTY; doorOpen=true; return 'ok';
-    }
-    // check if on goal tile
-    if(catState.x===fx-dv.dx && catState.y===fy-dv.dy) {
-      if(lvl.goal && catState.x===lvl.goal.x && catState.y===lvl.goal.y) return 'success';
-    }
+    if(tile===KEY){grid[fy][fx]=EMPTY;hasKey=true;return 'ok';}
+    if(tile===DOOR&&hasKey){grid[fy][fx]=EMPTY;doorOpen=true;return 'ok';}
     return 'ok';
   }
   return 'ok';
 }
 
-function checkAllCollected() {
-  const lvl = getLevel();
-  if(!lvl.collectibles) return false;
-  return collected.length >= lvl.collectibles.length;
-}
+function checkAllCollected(){const lvl=getLevel();if(!lvl.collectibles)return false;return collected.length>=lvl.collectibles.length;}
+function calcStars(steps){const lvl=getLevel();if(steps<=Math.ceil(lvl.maxBlocks*0.5))return 3;if(steps<=Math.ceil(lvl.maxBlocks*0.75))return 2;return 1;}
+function highlightBlock(i){unhighlightAll();const el=document.getElementById('block-'+i);if(el)el.classList.add('executing');}
+function unhighlightAll(){document.querySelectorAll('.placed-block').forEach(e=>e.classList.remove('executing'));}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+function setFeedback(msg,type){const el=document.getElementById('feedback');el.className='feedback'+(type?' '+type:'');el.innerHTML=msg;}
 
-function calcStars(steps) {
-  const lvl = getLevel();
-  if(steps <= Math.ceil(lvl.maxBlocks*0.5)) return 3;
-  if(steps <= Math.ceil(lvl.maxBlocks*0.75)) return 2;
-  return 1;
-}
-
-function highlightBlock(i) {
-  unhighlightAll();
-  const el = document.getElementById('block-'+i);
-  if(el) el.classList.add('executing');
-}
-function unhighlightAll() {
-  document.querySelectorAll('.placed-block').forEach(e=>e.classList.remove('executing'));
-}
-
-function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
-
-function setFeedback(msg,type) {
-  const el = document.getElementById('feedback');
-  el.className='feedback'+(type?' '+type:'');
-  el.innerHTML=msg;
-}
-
-// ===================== SUCCESS MODAL =====================
-function showSuccess(stars) {
-  const lvl = getLevel();
-  const msgs = [
-    ['🎊','Super travail !','Tu as guidé le chat avec précision !'],
-    ['🏆','Excellent !','Programme efficace, bravo !'],
-    ['🌟','Parfait !','Solution optimale ! Tu es un.e expert.e !'],
-  ];
-  const m = msgs[stars-1]||msgs[0];
-  document.getElementById('modalEmoji').textContent = m[0];
-  document.getElementById('modalTitle').textContent = m[1];
-  document.getElementById('modalMsg').textContent = m[2];
-  document.getElementById('modalStars').textContent = '⭐'.repeat(stars)+'☆'.repeat(3-stars);
-  setFeedback('✅ Réussi ! ' + '⭐'.repeat(stars),'success');
-
-  const nextBtn = document.getElementById('modalNext');
-  if(currentLevel<2) {
+function showSuccess(stars){
+  const msgs=[['🎊','Super travail !','Tu as guidé le chat avec précision !'],['🏆','Excellent !','Programme efficace, bravo !'],['🌟','Parfait !','Solution optimale ! Tu es un.e expert.e !']];
+  const m=msgs[stars-1]||msgs[0];
+  document.getElementById('modalEmoji').textContent=m[0];
+  document.getElementById('modalTitle').textContent=m[1];
+  document.getElementById('modalMsg').textContent=m[2];
+  document.getElementById('modalStars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
+  setFeedback('✅ Réussi ! '+'⭐'.repeat(stars),'success');
+  const nextBtn=document.getElementById('modalNext');
+  if(currentLevel<2){
     unlockedLevels[currentLevel+1]=true;
     nextBtn.textContent='Niveau suivant →';
-    nextBtn.onclick=()=>{ closeModal(); loadLevel(currentLevel+1); };
-    document.querySelectorAll('.lvl-btn').forEach((b,i)=>{
-      if(unlockedLevels[i]) b.className='lvl-btn unlocked';
-    });
+    nextBtn.onclick=()=>{closeModal();loadLevel(currentLevel+1);};
+    document.querySelectorAll('.lvl-btn').forEach((b,i)=>{if(unlockedLevels[i])b.className='lvl-btn unlocked';});
     document.querySelectorAll('.lvl-btn')[currentLevel].className='lvl-btn active';
   } else {
     nextBtn.textContent='🎉 Rejouer depuis le début';
-    nextBtn.onclick=()=>{ closeModal(); loadLevel(0); };
+    nextBtn.onclick=()=>{closeModal();loadLevel(0);};
   }
   document.getElementById('modalOverlay').classList.add('show');
 }
-function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
-function retryLevel() { closeModal(); resetCat(); }
-document.getElementById('modalOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeModal(); });
-
-// ===================== INIT =====================
+function closeModal(){document.getElementById('modalOverlay').classList.remove('show');}
+function retryLevel(){closeModal();resetCat();}
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
 loadLevel(0);
 </script>
 
-<!-- FICHE TECHNIQUE FLOTTANTE -->
+<!-- BOUTON FICHE TECHNIQUE -->
 <div style="position:fixed;bottom:16px;right:16px;z-index:500">
-  <button onclick="downloadFiche()" style="background:var(--panel);border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(0,0,0,.4)">
+  <button onclick="downloadFiche()" style="background:linear-gradient(135deg,#4f63d2,#6b8df7);border:none;color:#fff;padding:10px 18px;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(79,99,210,.35)">
     📄 Fiche technique
   </button>
 </div>
 
 <script>
-function downloadFiche() {
-  const html = `<!DOCTYPE html>
+function downloadFiche(){
+  const html=`<!DOCTYPE html>
 <html lang="fr">
-<head><meta charset="UTF-8"><title>Fiche Technique — ChatBot Explorateur</title>
+<head>
+<meta charset="UTF-8">
+<title>Fiche Technique — ChatBot Explorateur</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  body{font-family:'Segoe UI',sans-serif;max-width:720px;margin:40px auto;padding:0 24px;color:#1a1a2e;line-height:1.7}
-  h1{font-size:26px;color:#7c6af7;border-bottom:3px solid #7c6af7;padding-bottom:8px}
-  h2{font-size:18px;color:#4f46e5;margin-top:28px}
-  .badge{display:inline-block;background:#7c6af7;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700}
-  table{width:100%;border-collapse:collapse;margin:12px 0}
-  td,th{border:1px solid #ddd;padding:8px 12px;text-align:left}
-  th{background:#f5f3ff;color:#4f46e5;font-weight:700}
-  .level{background:#f8f7ff;border-left:4px solid #7c6af7;padding:12px 16px;margin:10px 0;border-radius:0 8px 8px 0}
-  .prompt-box{background:#1e1b4b;color:#c4b5fd;padding:16px;border-radius:10px;font-family:monospace;font-size:13px;white-space:pre-wrap}
-  footer{margin-top:40px;color:#888;font-size:12px;text-align:center;border-top:1px solid #eee;padding-top:16px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',sans-serif;background:#f0f6ff;color:#1e2a4a;min-height:100vh;padding:32px 16px}
+  .page{max-width:780px;margin:0 auto;background:#fff;border-radius:20px;box-shadow:0 8px 40px rgba(79,99,210,.15);overflow:hidden}
+  .header{background:linear-gradient(135deg,#4f63d2,#6b8df7);padding:28px 36px;color:#fff}
+  .header h1{font-size:22px;font-weight:900;margin-bottom:4px}
+  .header .sub{font-size:15px;color:#c7d4fc;font-weight:600}
+  .badges{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .badge{background:rgba(255,255,255,.2);color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid rgba(255,255,255,.3)}
+  .body{padding:28px 36px;display:flex;flex-direction:column;gap:24px}
+  .section-title{font-size:14px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#4f63d2;border-bottom:2px solid #e8f0fe;padding-bottom:8px;margin-bottom:14px}
+  table{width:100%;border-collapse:collapse}
+  td,th{padding:9px 14px;text-align:left;font-size:14px;border:1px solid #e2eaf8}
+  th{background:#eef3fd;color:#4f63d2;font-weight:700;font-size:13px}
+  tr:nth-child(even) td{background:#f8faff}
+  .obj-box{background:#eef3fd;border-left:4px solid #4f63d2;border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;line-height:1.7}
+  .obj-box b{color:#4f63d2}
+  .levels-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .lvl-card{border-radius:12px;padding:14px;border:1px solid #e2eaf8}
+  .lvl-card.n1{background:#f0f9ff;border-color:#bae6fd}
+  .lvl-card.n2{background:#f0fdf4;border-color:#bbf7d0}
+  .lvl-card.n3{background:#fdf4ff;border-color:#e9d5ff}
+  .lvl-num{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .lvl-card.n1 .lvl-num{color:#0284c7}
+  .lvl-card.n2 .lvl-num{color:#16a34a}
+  .lvl-card.n3 .lvl-num{color:#9333ea}
+  .lvl-title{font-size:15px;font-weight:800;margin-bottom:4px;color:#1e2a4a}
+  .lvl-desc{font-size:13px;color:#64748b;line-height:1.5}
+  .diff-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;margin-top:6px}
+  .diff-1{background:#dbeafe;color:#1d4ed8}
+  .diff-2{background:#dcfce7;color:#15803d}
+  .diff-3{background:#f3e8ff;color:#7e22ce}
+  ul{padding-left:20px;display:flex;flex-direction:column;gap:6px}
+  li{font-size:14px;line-height:1.6;color:#334155}
+  li::marker{color:#4f63d2}
+  .prompt-box{background:#1e2a4a;color:#bfdbfe;padding:16px 20px;border-radius:12px;font-family:'Courier New',monospace;font-size:13px;line-height:1.6;white-space:pre-wrap}
+  .modif-list{display:flex;flex-direction:column;gap:8px}
+  .modif-item{display:flex;gap:10px;align-items:flex-start;background:#f8faff;border-radius:10px;padding:10px 14px;border:1px solid #e2eaf8;font-size:13px;line-height:1.5}
+  .modif-num{background:#4f63d2;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:1px}
+  .check-list{display:flex;flex-direction:column;gap:8px}
+  .check-item{display:flex;gap:10px;align-items:center;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:600;color:#14532d}
+  .check-icon{font-size:18px}
+  footer{background:#eef3fd;padding:14px 36px;text-align:center;font-size:12px;color:#64748b;border-top:1px solid #e2eaf8}
 </style>
 </head>
 <body>
-<h1>🐱 Fiche Technique — ChatBot Explorateur</h1>
-<p><span class="badge">Jeu sérieux</span> &nbsp; <span class="badge">Programmation visuelle</span> &nbsp; <span class="badge">Style Blockly</span></p>
+<div class="page">
+  <div class="header">
+    <h1>🐱 Fiche Technique — ChatBot Explorateur</h1>
+    <div class="sub">Jeu sérieux de programmation visuelle style Blockly</div>
+    <div class="badges">
+      <span class="badge">Jeu sérieux</span>
+      <span class="badge">Programmation visuelle</span>
+      <span class="badge">Style Blockly</span>
+      <span class="badge">HTML5 / JavaScript</span>
+    </div>
+  </div>
 
-<h2>📋 Informations générales</h2>
-<table>
-  <tr><th>Élément</th><th>Détail</th></tr>
-  <tr><td>Titre</td><td>ChatBot Explorateur</td></tr>
-  <tr><td>Outil utilisé</td><td>HTML5 / CSS3 / JavaScript vanilla (aucune dépendance)</td></tr>
-  <tr><td>Type</td><td>Jeu sérieux de programmation visuelle (style Blockly)</td></tr>
-  <tr><td>Public cible</td><td>Collège / Lycée (10–16 ans) · Débutants en algorithmique</td></tr>
-  <tr><td>Temps estimé</td><td>20–35 minutes pour les 3 niveaux</td></tr>
-  <tr><td>Accessibilité</td><td>Navigateur web, sans installation (fichier .html)</td></tr>
-</table>
+  <div class="body">
 
-<h2>🎯 Objectif pédagogique</h2>
-<p>L'élève apprend à <strong>décomposer un problème en séquence d'instructions</strong>, à utiliser des <strong>commandes de direction et d'action</strong>, et à comprendre le concept de <strong>boucle de répétition</strong>, le tout en mode visuel (drag-and-drop de blocs de code).</p>
+    <div>
+      <div class="section-title">📋 Informations générales</div>
+      <table>
+        <tr><th>Élément</th><th>Détail</th></tr>
+        <tr><td><b>Titre</b></td><td>ChatBot Explorateur</td></tr>
+        <tr><td><b>Outil utilisé</b></td><td>HTML5 / CSS3 / JavaScript vanilla (sans dépendance)</td></tr>
+        <tr><td><b>Type</b></td><td>Jeu sérieux — programmation visuelle (drag-and-drop de blocs)</td></tr>
+        <tr><td><b>Public cible</b></td><td>Collège / Lycée · Débutants en algorithmique (10–16 ans)</td></tr>
+        <tr><td><b>Temps estimé</b></td><td>20–35 minutes pour les 3 niveaux</td></tr>
+        <tr><td><b>Accessibilité</b></td><td>Navigateur web, sans installation (fichier .html autonome)</td></tr>
+        <tr><td><b>Progression</b></td><td>3 niveaux débloqués séquentiellement</td></tr>
+        <tr><td><b>Système de récompense</b></td><td>Étoiles ⭐ selon l'efficacité du programme</td></tr>
+      </table>
+    </div>
 
-<h2>📚 Compétences visées</h2>
-<ul>
-  <li>Séquençage d'instructions (algorithme linéaire)</li>
-  <li>Gestion de l'orientation spatiale (gauche, droite, avant, arrière)</li>
-  <li>Actions conditionnelles (clé → porte → objectif)</li>
-  <li>Optimisation de code (boucles pour réduire la répétition)</li>
-  <li>Débogage : observation de l'exécution bloc par bloc</li>
-</ul>
+    <div>
+      <div class="section-title">🎯 Objectif pédagogique</div>
+      <div class="obj-box">
+        L'élève apprend à <b>décomposer un problème en séquence d'instructions</b>, à utiliser des <b>commandes de direction et d'action</b>, et à comprendre le concept de <b>boucle de répétition</b> — le tout en mode visuel par glisser-déposer de blocs de code.
+      </div>
+    </div>
 
-<h2>🗺️ Les 3 niveaux</h2>
+    <div>
+      <div class="section-title">🗺️ Les 3 niveaux progressifs</div>
+      <div class="levels-grid">
+        <div class="lvl-card n1">
+          <div class="lvl-num">Niveau 1</div>
+          <div class="lvl-title">Premiers pas</div>
+          <div class="lvl-desc">Blocs : Avancer, Reculer, Tourner<br>Objectif : guider le chat 🐱 jusqu'au poisson 🐟</div>
+          <span class="diff-badge diff-1">⬤ Facile</span>
+        </div>
+        <div class="lvl-card n2">
+          <div class="lvl-num">Niveau 2</div>
+          <div class="lvl-title">Collecte de poissons</div>
+          <div class="lvl-desc">Blocs : + Interagir<br>Objectif : collecter 2 poissons 🐟🐟</div>
+          <span class="diff-badge diff-2">⬤ Moyen</span>
+        </div>
+        <div class="lvl-card n3">
+          <div class="lvl-num">Niveau 3</div>
+          <div class="lvl-title">La clé et la porte</div>
+          <div class="lvl-desc">Blocs : + Répéter 3×<br>Objectif : clé 🔑 → porte 🚪 → poisson 🐟</div>
+          <span class="diff-badge diff-3">⬤ Difficile</span>
+        </div>
+      </div>
+    </div>
 
-<div class="level">
-<strong>Niveau 1 — Premiers pas</strong><br>
-Blocs disponibles : Avancer, Reculer, Tourner gauche/droite<br>
-Objectif : guider le chat jusqu'au poisson en traversant un labyrinthe simple<br>
-Compétence : séquencement d'instructions de base
+    <div>
+      <div class="section-title">📚 Compétences visées</div>
+      <ul>
+        <li>Séquençage d'instructions (algorithme linéaire)</li>
+        <li>Gestion de l'orientation spatiale (gauche, droite, avant, arrière)</li>
+        <li>Actions conditionnelles : clé → ouvrir porte → atteindre objectif</li>
+        <li>Optimisation de code avec les boucles (réduire la répétition)</li>
+        <li>Débogage : observation de l'exécution bloc par bloc (animation)</li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="section-title">⭐ Système d'évaluation</div>
+      <table>
+        <tr><th>Étoiles</th><th>Condition</th></tr>
+        <tr><td>⭐⭐⭐</td><td>Réussi en utilisant ≤ 50% des blocs autorisés</td></tr>
+        <tr><td>⭐⭐</td><td>Réussi en utilisant ≤ 75% des blocs autorisés</td></tr>
+        <tr><td>⭐</td><td>Réussi (quelle que soit l'efficacité du programme)</td></tr>
+      </table>
+    </div>
+
+  
+
+  </div>
+  <footer>Fiche générée automatiquement — ChatBot Explorateur © 2025 — Réalisé avec Claude (Anthropic)</footer>
 </div>
-
-<div class="level">
-<strong>Niveau 2 — Collecte de poissons</strong><br>
-Blocs disponibles : tout le niveau 1 + Interagir<br>
-Objectif : collecter 2 poissons avec le bloc Interagir<br>
-Compétence : notion d'action sur l'environnement, planification multiple
-</div>
-
-<div class="level">
-<strong>Niveau 3 — La clé et la porte</strong><br>
-Blocs disponibles : tout + Répéter 3×<br>
-Objectif : trouver la clé, ouvrir la porte, atteindre le poisson<br>
-Compétence : ordonnancement conditionnel + introduction aux boucles
-</div>
-
-<h2>⭐ Système d'évaluation</h2>
-<table>
-  <tr><th>Étoiles</th><th>Condition</th></tr>
-  <tr><td>⭐⭐⭐</td><td>Réussi en ≤ 50% des blocs autorisés</td></tr>
-  <tr><td>⭐⭐</td><td>Réussi en ≤ 75% des blocs autorisés</td></tr>
-  <tr><td>⭐</td><td>Réussi (quelle que soit l'efficacité)</td></tr>
-</table>
-
-
-<footer>Fiche générée automatiquement — ChatBot Explorateur © 2025 — Travail réalisé avec Claude (Anthropic)</footer>
-</body></html>`;
-
-  const blob = new Blob([html], {type:'text/html'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'fiche_technique_chatbot_explorateur.html';
+</body>
+</html>`;
+  const blob=new Blob([html],{type:'text/html'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='fiche_technique_chatbot_explorateur.html';
   a.click();
 }
 </script>
